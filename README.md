@@ -1,57 +1,171 @@
-# InLnJpO2H
-一个Obsidian的链接格式规范器，将你的Obsidian文章链接风格一键更改为Hexo可识别的格式
 
-## Obsidian vs HTML 链接格式对比
 
-主要的转换需求包括：<mcreference link="https://help.obsidian.md/links" index="3">参考obsidian官方文档</mcreference>
 
-1. **Obsidian Wikilink格式**: `[[文件名]]` 或 `[[文件名|显示文本]]`
-2. **Obsidian 内部锚点**: `[[#标题]]` 或 `[[#^块ID]]`
-3. **Obsidian 图片嵌入**: `![[图片名.png]]`
-4. **HTML 锚点格式**: `<a href="#anchor-id">显示文本</a>` 或 `[显示文本](#anchor-id)`
+          
+# Obsidian to Markdown Converter
+
+一个用于将 Obsidian 格式的 Markdown 文件转换为标准 Markdown 格式的 Python 工具，特别适用于 Hexo 博客系统。
+
+## 功能特性
+
+### 🔗 链接转换
+- **内部链接**: `[[#标题|显示文本]]` → `[显示文本](#标题)`
+- **跨文档链接**: `[[文档名|显示文本]]` → `[显示文本](文档名.md)`
+- **自动锚点处理**: 移除锚点中的空格，确保链接正确跳转
+
+### 📝 Note 卡片转换
+将 Obsidian 的 Note 卡片转换为带有赛博朋克 2077 风格的 HTML 格式：
+
+**支持的 Note 类型**:
+- `[!NOTE]` - 信息提示 (青色)
+- `[!TIP]` - 技巧提示 (绿色)
+- `[!WARNING]` - 警告信息 (黄色)
+- `[!DANGER]` - 危险警告 (红色)
+- `[!INFO]` - 一般信息 (青色)
+- `[!EXAMPLE]` - 示例说明 (紫色)
+- `[!QUOTE]` - 引用内容 (紫色)
+
+**设计特色**:
+- 🎨 赛博朋克 2077 主题配色
+- ✨ 霓虹发光效果和扫描线动画
+- 🔤 Orbitron 字体增强科技感
+- 📱 响应式设计，支持移动端
+
+### 🖼️ 图片引用转换
+- `![[图片名]]` → `![图片名](图片名)`
+- 自动修复错误的文件扩展名
+
+### 📄 Hexo 兼容性
+- 自动添加 YAML Front Matter
+- 内置 CSS 样式，无需额外配置
+- 生成当前时间戳
+
+## 安装要求
+
+- Python 3.6+
+- 无需额外依赖包
 
 ## 使用方法
 
-### 1. 转换单个文件
+### 命令行使用
+
 ```bash
-python obsidian_to_html_converter.py "目标文档地址"
+# 转换单个文件
+python obsidian_to_markdown_converter.py input.md -o output.md
+
+# 转换整个目录
+python obsidian_to_markdown_converter.py input_dir -o output_dir
+
+# 不添加 CSS 样式
+python obsidian_to_markdown_converter.py input.md --no-css
 ```
 
-### 2. 转换整个目录
-```bash
-python obsidian_to_html_converter.py . -o ./converted
+### 作为模块使用
+
+```python
+from obsidian_to_markdown_converter import ObsidianToMarkdownConverter
+
+# 创建转换器实例
+converter = ObsidianToMarkdownConverter()
+
+# 转换单个文件
+converter.convert_file('input.md', 'output.md')
+
+# 转换目录
+converter.convert_directory('input_dir', 'output_dir')
 ```
 
-### 3. 自定义路径设置
+### 直接运行
+
+将脚本放在包含 `CQU校园网解决方案.md` 文件的目录中，直接运行：
+
 ```bash
-python obsidian_to_html_converter.py "目标文档地址" --image-path "/assets/images/" --file-path "/posts/"
+python obsidian_to_markdown_converter.py
 ```
 
 ## 转换示例
 
-基于我的文档，以下是转换效果：
+### 内部链接转换
 
-**转换前（Obsidian格式）：**
+**转换前 (Obsidian)**:
 ```markdown
-![[Pasted image 20250722213238.png]]
-[[#2. 大佬搭建的的云端编译平台（牛逼，编译速度快）|方案二]]
-[[#^11cf71|23.05.4]]
+[[#方案二|点击查看方案二]]
 ```
 
-**转换后（HTML格式）：**
+**转换后 (标准 Markdown)**:
 ```markdown
-![Pasted image 20250722213238](/images/Pasted image 20250722213238.png)
-<a href="#2-大佬搭建的的云端编译平台牛逼编译速度快">方案二</a>
-<a href="#11cf71">23.05.4</a>
+[点击查看方案二](#方案二)
 ```
 
-## 程序特点
+### Note 卡片转换
 
-1. **全面支持**：处理所有常见的Obsidian链接格式<mcreference link="https://help.obsidian.md/links" index="3">3</mcreference>
-2. **智能转换**：自动将中文标题转换为HTML友好的锚点ID
-3. **批量处理**：支持单文件和整个目录的批量转换
-4. **路径自定义**：可以自定义图片和文件的基础路径
-5. **安全备份**：可以指定输出目录，避免覆盖原文件
-6. **错误处理**：完善的错误处理和进度反馈
+**转换前 (Obsidian)**:
+```markdown
+> [!NOTE] 重要提示
+> 这是一个重要的提示信息
+> 请仔细阅读
+```
 
-这个程序应该能够满足您将Obsidian文档转换为Hexo兼容格式的需求。您可以根据具体的Hexo配置调整图片和文件的基础路径。
+**转换后 (HTML)**:
+```html
+<div class="note note-info">
+  <div class="note-title">
+    <span class="note-icon">📝</span>
+    <span class="note-text">重要提示</span>
+  </div>
+  <div class="note-content">
+    <p>这是一个重要的提示信息</p>
+    <p>请仔细阅读</p>
+  </div>
+</div>
+```
+
+## 输出文件结构
+
+转换后的文件将包含：
+
+1. **YAML Front Matter** - 包含标题、日期、标签等元数据
+2. **CSS 样式** - 赛博朋克主题的 Note 卡片样式
+3. **转换后的内容** - 标准 Markdown 格式的文档内容
+
+## 特色功能
+
+### 🎨 赛博朋克 2077 主题
+- 深色渐变背景
+- 霓虹色彩边框和文字
+- 发光文字效果
+- 扫描线动画
+- 闪烁指示器
+- 鼠标悬停故障效果
+
+### 🔧 智能处理
+- 自动识别和转换各种 Obsidian 语法
+- 保持原有的文档结构
+- 错误处理和异常捕获
+- 支持中文文件名和内容
+
+## 适用场景
+
+- 📝 将 Obsidian 笔记迁移到 Hexo 博客
+- 🔄 批量转换 Obsidian 文档格式
+- 🎨 为技术文档添加炫酷的视觉效果
+- 📚 学术论文和技术报告的格式转换
+
+## 注意事项
+
+- 转换后的文件包含 HTML 和 CSS，需要支持 HTML 渲染的 Markdown 解析器
+- 建议在转换前备份原始文件
+- CSS 样式使用了 Google Fonts，需要网络连接才能正常显示字体
+
+## 许可证
+
+MIT License
+
+## 贡献
+
+欢迎提交 Issue 和 Pull Request 来改进这个工具！
+
+---
+
+**让你的 Obsidian 笔记在 Hexo 中闪闪发光！** ✨🚀
+        
