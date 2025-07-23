@@ -1,0 +1,2 @@
+# InLnJpO2H
+一个Obsidian的链接格式规范器，将你的Obsidian文章链接风格一键更改为Hexo可识别的格式
