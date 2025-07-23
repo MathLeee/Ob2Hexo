@@ -21,10 +21,27 @@ class ObsidianToMarkdownConverter:
         [[#标题|显示文本]] -> [显示文本](#标题)
         [[#标题]] -> [标题](#标题)
         """
+        def generate_anchor(title):
+            """
+            生成标准的 Markdown 锚点
+            - 将空格替换为连字符
+            - 移除标点符号（包括中文和英文标点）
+            - 转换为小写
+            """
+            import re
+            # 将空格替换为连字符
+            anchor = title.replace(' ', '-')
+            # 移除所有标点符号（包括中英文标点）
+            anchor = re.sub(r'[^\w\u4e00-\u9fff-]', '', anchor)
+            # 转换为小写
+            anchor = anchor.lower()
+            return anchor
+        
         # 匹配 [[#标题|显示文本]] 格式
         def replace_with_display_text(match):
-            anchor = match.group(1).replace(' ', '')
+            title = match.group(1)
             display_text = match.group(2)
+            anchor = generate_anchor(title)
             return f'[{display_text}](#{anchor})'
         
         pattern1 = r'\[\[#([^|\]]+)\|([^\]]+)\]\]'
@@ -33,7 +50,7 @@ class ObsidianToMarkdownConverter:
         # 匹配 [[#标题]] 格式
         def replace_without_display_text(match):
             title = match.group(1)
-            anchor = title.replace(' ', '')
+            anchor = generate_anchor(title)
             return f'[{title}](#{anchor})'
         
         pattern2 = r'\[\[#([^\]]+)\]\]'
@@ -112,17 +129,31 @@ class ObsidianToMarkdownConverter:
         """
         生成HTML格式的Note卡片
         """
-        content_html = '\n'.join([f'  <p>{line}</p>' for line in content_lines if line])
+        content_html_lines = []
+        for line in content_lines:
+            if line:
+                # 检查是否是图片语法 ![alt](url)
+                img_match = re.match(r'^!\[([^\]]*)\]\(([^\)]+)\)$', line.strip())
+                if img_match:
+                    alt_text = img_match.group(1)
+                    img_url = img_match.group(2)
+                    # 转换为HTML img标签
+                    content_html_lines.append(f'  <img src="{img_url}" alt="{alt_text}" style="max-width: 100%; height: auto; border-radius: 4px; margin: 0.5em 0;" />')
+                else:
+                    # 普通文本包装在p标签中
+                    content_html_lines.append(f'  <p>{line}</p>')
+        
+        content_html = '\n'.join(content_html_lines)
         
         html = f'''<div class="note note-{css_class}">
-  <div class="note-title">
-    <span class="note-icon">{icon}</span>
-    <span class="note-text">{title}</span>
-  </div>
-  <div class="note-content">
-{content_html}
-  </div>
-</div>'''
+      <div class="note-title">
+        <span class="note-icon">{icon}</span>
+        <span class="note-text">{title}</span>
+      </div>
+      <div class="note-content">
+    {content_html}
+      </div>
+    </div>'''
         
         return html
     
