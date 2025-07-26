@@ -1,102 +1,167 @@
-# Ob2Hexo - Obsidian to Hexo Converter
+# Obsidian to Markdown Converter
 
-<p align="center">
-  <img src="https://img.shields.io/github/v/release/MathLeee/Ob2Hexo?style=for-the-badge" alt="GitHub release (latest by date)">
-  <img src="https://img.shields.io/github/downloads/MathLeee/Ob2Hexo/total?style=for-the-badge" alt="GitHub all releases">
-  <img src="https://img.shields.io/github/license/MathLeee/Ob2Hexo?style=for-the-badge" alt="GitHub">
-</p>
+一个用于将 Obsidian 格式的 Markdown 文件转换为标准 Markdown 格式的 Python 工具，特别适用于 Hexo 博客系统。
 
-一个强大的工具，旨在将你的Obsidian笔记无缝转换为与Hexo博客系统完全兼容的Markdown格式。项目提供两种使用方式：**Obsidian插件**（推荐）和**独立的Python脚本**。
+## 功能特性
 
-## 核心功能
+### 🔗 链接转换
+- **内部链接**: `[[#标题|显示文本]]` → `[显示文本](#标题)`
+- **跨文档链接**: `[[文档名|显示文本]]` → `[显示文本](文档名.md)`
+- **自动锚点处理**: 移除锚点中的空格，确保链接正确跳转
 
-- **✨ 智能链接转换**: 自动处理内部链接、跨文档链接，并生成符合规范的锚点。
-- **🎨 赛博朋克Note卡片**: 将Obsidian的Callouts（如 `[!NOTE]`）转换为带有赛博朋克2077风格的HTML卡片，支持多种类型和自定义标题。
-- **🖼️ 图片引用修复**: 自动转换 `![[图片]]` 格式为标准Markdown图片引用。
-- **📄 Hexo兼容**: 自动为转换后的文件添加YAML Front Matter，包含标题、日期等。
-- **🚀 批量处理**: 支持一键转换文件夹内的所有Markdown文件。
+### 📝 Note 卡片转换
+将 Obsidian 的 Note 卡片转换为带有赛博朋克 2077 风格的 HTML 格式：
 
----
+**支持的 Note 类型**:
+- `[!NOTE]` - 信息提示 (青色)
+- `[!TIP]` - 技巧提示 (绿色)
+- `[!WARNING]` - 警告信息 (黄色)
+- `[!DANGER]` - 危险警告 (红色)
+- `[!INFO]` - 一般信息 (青色)
+- `[!EXAMPLE]` - 示例说明 (紫色)
+- `[!QUOTE]` - 引用内容 (紫色)
 
-## 🚀 方案一：Obsidian插件（推荐）
+**设计特色**:
+- 🎨 赛博朋克 2077 主题配色
+- ✨ 霓虹发光效果和扫描线动画
+- 🔤 Orbitron 字体增强科技感
+- 📱 响应式设计，支持移动端
 
-在Obsidian中直接享受最流畅、最便捷的转换体验。
+### 🖼️ 图片引用转换
+- `![[图片名]]` → `![图片名](图片名)`
+- 自动修复错误的文件扩展名
 
-### 安装插件
+### 📄 Hexo 兼容性
+- 自动添加 YAML Front Matter
+- 内置 CSS 样式，无需额外配置
+- 生成当前时间戳
 
-1.  访问本项目的 [Releases页面](https://github.com/MathLeee/Ob2Hexo/releases)。
-2.  下载最新的 `main.js` 和 `manifest.json` 文件。
-3.  在你的Obsidian仓库中，进入 `.obsidian/plugins/` 目录（如果没有，请手动创建）。
-4.  创建一个新的文件夹，例如 `ob2hexo-converter`。
-5.  将下载的 `main.js` 和 `manifest.json` 放入该文件夹。
-6.  重启Obsidian，在 `设置` -> `社区插件` 中启用 "Obsidian to Hexo Converter"。
-
-### 使用方法
-
-启用插件后，你有多种方式触发转换：
-
-- **右键菜单**: 在文件浏览器中右键点击一个Markdown文件，选择 `🔄 转换为Hexo格式`。
-- **命令面板**: 按 `Ctrl+P` 打开命令面板，输入并选择：
-    - `转换当前文件为Hexo格式`
-    - `批量转换当前文件夹的所有MD文件`
-
-转换后的文件将以 `_converted.md` 后缀保存在原文件旁边。
-
----
-
-## 🐍 方案二：独立Python脚本
-
-适用于不希望安装插件，或需要在自动化流程中使用的场景。
-
-### 环境要求
+## 安装要求
 
 - Python 3.6+
 - 无需额外依赖包
 
-### 使用方法
+## 使用方法
+
+### 命令行使用
 
 ```bash
-# 克隆仓库
-git clone https://github.com/MathLeee/Ob2Hexo.git
-cd Ob2Hexo
-
 # 转换单个文件
-python obsidian_to_markdown_converter.py path/to/your/file.md
+python obsidian_to_markdown_converter.py input.md -o output.md
 
 # 转换整个目录
-python obsidian_to_markdown_converter.py path/to/your/directory
+python obsidian_to_markdown_converter.py input_dir -o output_dir
 
-# 查看帮助
-python obsidian_to_markdown_converter.py -h
+# 不添加 CSS 样式
+python obsidian_to_markdown_converter.py input.md --no-css
 ```
 
-## 🎨 赛博朋克Note卡片展示
+### 作为模块使用
 
-转换后的Note卡片拥有独特的赛博朋克风格，支持多种类型：
+```python
+from obsidian_to_markdown_converter import ObsidianToMarkdownConverter
 
-| 类型 | 颜色 | 图标 |
-| :--- | :--- | :--- |
-| `[!NOTE]` | 青色 | 📝 |
-| `[!TIP]` | 绿色 | 💡 |
-| `[!WARNING]`| 黄色 | ⚠️ |
-| `[!DANGER]` | 红色 | 🚨 |
-| `[!INFO]` | 青色 | ℹ️ |
-| `[!EXAMPLE]`| 紫色 | 📋 |
-| `[!QUOTE]` | 紫色 | 💬 |
+# 创建转换器实例
+converter = ObsidianToMarkdownConverter()
 
-**示例效果**:
+# 转换单个文件
+converter.convert_file('input.md', 'output.md')
 
-*（这里可以放一张Note卡片的截图）*
+# 转换目录
+converter.convert_directory('input_dir', 'output_dir')
+```
 
-## 贡献
+### 直接运行
 
-欢迎通过提交 **Issues** 或 **Pull Requests** 来帮助改进这个项目。无论是功能建议、Bug报告还是代码贡献，我们都非常欢迎！
+将脚本放在包含 `CQU校园网解决方案.md` 文件的目录中，直接运行：
+
+```bash
+python obsidian_to_markdown_converter.py
+```
+
+## 转换示例
+
+### 内部链接转换
+
+**转换前 (Obsidian)**:
+```markdown
+[[#方案二|点击查看方案二]]
+```
+
+**转换后 (标准 Markdown)**:
+```markdown
+[点击查看方案二](#方案二)
+```
+
+### Note 卡片转换
+
+**转换前 (Obsidian)**:
+```markdown
+> [!NOTE] 重要提示
+> 这是一个重要的提示信息
+> 请仔细阅读
+```
+
+**转换后 (HTML)**:
+```html
+<div class="note note-info">
+  <div class="note-title">
+    <span class="note-icon">📝</span>
+    <span class="note-text">重要提示</span>
+  </div>
+  <div class="note-content">
+    <p>这是一个重要的提示信息</p>
+    <p>请仔细阅读</p>
+  </div>
+</div>
+```
+
+## 输出文件结构
+
+转换后的文件将包含：
+
+1. **YAML Front Matter** - 包含标题、日期、标签等元数据
+2. **CSS 样式** - 赛博朋克主题的 Note 卡片样式
+3. **转换后的内容** - 标准 Markdown 格式的文档内容
+
+## 特色功能
+
+### 🎨 赛博朋克 2077 主题
+- 深色渐变背景
+- 霓虹色彩边框和文字
+- 发光文字效果
+- 扫描线动画
+- 闪烁指示器
+- 鼠标悬停故障效果
+
+### 🔧 智能处理
+- 自动识别和转换各种 Obsidian 语法
+- 保持原有的文档结构
+- 错误处理和异常捕获
+- 支持中文文件名和内容
+
+## 适用场景
+
+- 📝 将 Obsidian 笔记迁移到 Hexo 博客
+- 🔄 批量转换 Obsidian 文档格式
+- 🎨 为技术文档添加炫酷的视觉效果
+- � 学术论文和技术报告的格式转换
+
+## 注意事项
+
+- 转换后的文件包含 HTML 和 CSS，需要支持 HTML 渲染的 Markdown 解析器
+- 建议在转换前备份原始文件
+- CSS 样式使用了 Google Fonts，需要网络连接才能正常显示字体
 
 ## 许可证
 
-本项目基于 [MIT License](LICENSE) 开源。
+MIT License
+
+## 贡献
+
+欢迎提交 Issue 和 Pull Request 来改进这个工具！
 
 ---
 
-**让你的Obsidian笔记在Hexo中闪闪发光！** ✨🚀
+**让你的 Obsidian 笔记在 Hexo 中闪闪发光！** ✨🚀
         
