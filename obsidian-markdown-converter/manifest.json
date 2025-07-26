@@ -1,0 +1,11 @@
+{
+    "id": "obsidian-markdown-converter",
+    "name": "Obsidian to Hexo Converter",
+    "version": "1.0.0",
+    "minAppVersion": "0.15.0",
+    "description": "将Obsidian格式的Markdown转换为Hexo兼容格式，支持右键菜单转换",
+    "author": "MathLeee",
+    "authorUrl": "",
+    "fundingUrl": "",
+    "isDesktopOnly": false
+}
