@@ -1,8 +1,35 @@
-# Obsidian to Markdown Converter
+# Obsidian to Hexo Converter (Ob2Hexo)
 
-一个用于将 Obsidian 格式的 Markdown 文件转换为标准 Markdown 格式的 Python 工具，特别适用于 Hexo 博客系统。
+一个用于将 Obsidian 格式的 Markdown 文件转换为 Hexo 博客兼容格式的工具集，包含 Python 脚本和 Obsidian 插件两个版本。
 
-## 功能特性
+## 🚀 快速开始
+
+### Python 脚本版本
+
+```bash
+# 克隆仓库
+git clone https://github.com/MathLeee/Ob2Hexo.git
+cd Ob2Hexo
+
+# 转换单个文件
+python obsidian_to_markdown_converter.py input.md -o output.md
+```
+
+### Obsidian 插件版本
+
+1. 下载 `obsidian-markdown-converter` 文件夹
+2. 复制到你的 Obsidian 插件目录
+3. 在 Obsidian 中启用插件
+4. 右键点击文件选择"转换为 Hexo 格式"
+
+## 📦 两个版本对比
+
+| 特性 | Python 脚本 | Obsidian 插件 |
+|------|-------------|---------------|
+| 使用便利性 | 命令行操作 | 图形界面，右键转换 |
+| 批量处理 | ✅ 支持 | ✅ 支持 |
+| 依赖要求 | Python 3.6+ | Obsidian 软件 |
+| 自定义程度 | 高 | 中等 |
 
 ### 🔗 链接转换
 - **内部链接**: `[[#标题|显示文本]]` → `[显示文本](#标题)`
@@ -164,4 +191,23 @@ MIT License
 ---
 
 **让你的 Obsidian 笔记在 Hexo 中闪闪发光！** ✨🚀
-        
+
+## 🤝 贡献指南
+
+1. Fork 本仓库
+2. 创建你的特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交你的更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 打开一个 Pull Request
+
+## 📄 更新日志
+
+### v2.0.0 (最新)
+- ✨ 新增 Obsidian 插件版本
+- 🎨 优化赛博朋克 2077 主题样式
+- 🐛 修复图片显示问题
+- 🔧 改进锚点生成逻辑
+
+### v1.0.0
+- 🎉 初始版本发布
+- 📝 基础 Markdown 转换功能
